@@ -18,16 +18,19 @@ package networking
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/openstack/networking/v2/extensions/attributestags"
 	"github.com/gophercloud/gophercloud/openstack/networking/v2/extensions/external"
 	"github.com/gophercloud/gophercloud/openstack/networking/v2/networks"
+	"github.com/gophercloud/gophercloud/openstack/networking/v2/ports"
 	"github.com/gophercloud/gophercloud/openstack/networking/v2/subnets"
 
 	infrav1 "sigs.k8s.io/cluster-api-provider-openstack/api/v1alpha5"
 	"sigs.k8s.io/cluster-api-provider-openstack/pkg/metrics"
 	"sigs.k8s.io/cluster-api-provider-openstack/pkg/record"
+	capoerrors "sigs.k8s.io/cluster-api-provider-openstack/pkg/utils/errors"
 	"sigs.k8s.io/cluster-api-provider-openstack/pkg/utils/names"
 )
 
@@ -144,6 +147,33 @@ func (s *Service) ReconcileNetwork(openStackCluster *infrav1.OpenStackCluster, c
 		Name: network.Name,
 		Tags: openStackCluster.Spec.Tags,
 	}
+	return nil
+}
+
+func (s *Service) DeletePorts(openStackCluster *infrav1.OpenStackCluster) error {
+	networkID := openStackCluster.Spec.Network.ID
+	portList, err := s.client.ListPort(ports.ListOpts{
+		NetworkID:   networkID,
+		DeviceOwner: "",
+	})
+	if err != nil {
+		if capoerrors.IsNotFound(err) {
+			return nil
+		}
+		return fmt.Errorf("searching for no owner port error: %v", err)
+	}
+
+	for _, port := range portList {
+		if strings.Contains(port.Name, openStackCluster.Name) && port.DeviceOwner == "" {
+			err := s.DeletePort(openStackCluster, port.ID)
+			if capoerrors.IsNotFound(err) {
+				continue
+			} else {
+				return fmt.Errorf("delete port %s of network %q failed : %v", port.ID, networkID, err)
+			}
+		}
+	}
+
 	return nil
 }
 
