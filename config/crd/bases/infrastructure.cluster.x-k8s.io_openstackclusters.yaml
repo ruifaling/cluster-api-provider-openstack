@@ -103,11 +103,11 @@ spec:
                           credentials
                         properties:
                           name:
-                            description: Name is unique within a namespace to reference
+                            description: name is unique within a namespace to reference
                               a secret resource.
                             type: string
                           namespace:
-                            description: Namespace defines the space within which
+                            description: namespace defines the space within which
                               the secret name must be unique.
                             type: string
                         type: object
@@ -330,11 +330,11 @@ spec:
                           (startup script in most cases)
                         properties:
                           name:
-                            description: Name is unique within a namespace to reference
+                            description: name is unique within a namespace to reference
                               a secret resource.
                             type: string
                           namespace:
-                            description: Namespace defines the space within which
+                            description: namespace defines the space within which
                               the secret name must be unique.
                             type: string
                         type: object
@@ -349,11 +349,11 @@ spec:
                 description: The name of the secret containing the openstack credentials
                 properties:
                   name:
-                    description: Name is unique within a namespace to reference a
+                    description: name is unique within a namespace to reference a
                       secret resource.
                     type: string
                   namespace:
-                    description: Namespace defines the space within which the secret
+                    description: namespace defines the space within which the secret
                       name must be unique.
                     type: string
                 type: object
@@ -2511,12 +2511,18 @@ spec:
                 properties:
                   additionalPorts:
                     description: AdditionalPorts adds additional tcp ports to the
-                      Loadbalacner
+                      load balancer.
                     items:
                       type: integer
                     type: array
+                  allowedCidrs:
+                    description: AllowedCIDRs restrict access to all API-Server listeners
+                      to the given address CIDRs.
+                    items:
+                      type: string
+                    type: array
                   enabled:
-                    description: Enabled defines whether a LoadBalancer should be
+                    description: Enabled defines whether a load balancer should be
                       created.
                     type: boolean
                 type: object
@@ -2779,7 +2785,53 @@ spec:
                               type: object
                             projectId:
                               type: string
+                            securityGroupFilters:
+                              description: The names, uuids, filters or any combination
+                                these of the security groups to assign to the instance
+                              items:
+                                properties:
+                                  filter:
+                                    description: Filters used to query security groups
+                                      in openstack
+                                    properties:
+                                      description:
+                                        type: string
+                                      id:
+                                        type: string
+                                      limit:
+                                        type: integer
+                                      marker:
+                                        type: string
+                                      name:
+                                        type: string
+                                      notTags:
+                                        type: string
+                                      notTagsAny:
+                                        type: string
+                                      projectId:
+                                        type: string
+                                      sortDir:
+                                        type: string
+                                      sortKey:
+                                        type: string
+                                      tags:
+                                        type: string
+                                      tagsAny:
+                                        type: string
+                                      tenantId:
+                                        type: string
+                                    type: object
+                                  name:
+                                    description: Security Group name
+                                    type: string
+                                  uuid:
+                                    description: Security Group UID
+                                    type: string
+                                type: object
+                              type: array
                             securityGroups:
+                              description: The uuids of the security groups to assign
+                                to the instance
                               items:
                                 type: string
                               type: array
@@ -3126,6 +3178,10 @@ spec:
                             because this field is optional and therefore not set in
                             all cases
                           properties:
+                            allowedCIDRs:
+                              items:
+                                type: string
+                              type: array
                             id:
                               type: string
                             internalIP:
@@ -3252,7 +3308,53 @@ spec:
                               type: object
                             projectId:
                               type: string
+                            securityGroupFilters:
+                              description: The names, uuids, filters or any combination
+                                these of the security groups to assign to the instance
+                              items:
+                                properties:
+                                  filter:
+                                    description: Filters used to query security groups
+                                      in openstack
+                                    properties:
+                                      description:
+                                        type: string
+                                      id:
+                                        type: string
+                                      limit:
+                                        type: integer
+                                      marker:
+                                        type: string
+                                      name:
+                                        type: string
+                                      notTags:
+                                        type: string
+                                      notTagsAny:
+                                        type: string
+                                      projectId:
+                                        type: string
+                                      sortDir:
+                                        type: string
+                                      sortKey:
+                                        type: string
+                                      tags:
+                                        type: string
+                                      tagsAny:
+                                        type: string
+                                      tenantId:
+                                        type: string
+                                    type: object
+                                  name:
+                                    description: Security Group name
+                                    type: string
+                                  uuid:
+                                    description: Security Group UID
+                                    type: string
+                                type: object
+                              type: array
                             securityGroups:
+                              description: The uuids of the security groups to assign
+                                to the instance
                               items:
                                 type: string
                               type: array
@@ -3281,6 +3383,10 @@ spec:
                           properties:
                             id:
                               type: string
+                            ips:
+                              items:
+                                type: string
+                              type: array
                             name:
                               type: string
                             tags:
@@ -3463,6 +3569,10 @@ spec:
                     description: Be careful when using APIServerLoadBalancer, because
                       this field is optional and therefore not set in all cases
                     properties:
+                      allowedCIDRs:
+                        items:
+                          type: string
+                        type: array
                       id:
                         type: string
                       internalIP:
@@ -3586,7 +3696,53 @@ spec:
                         type: object
                       projectId:
                         type: string
+                      securityGroupFilters:
+                        description: The names, uuids, filters or any combination
+                          these of the security groups to assign to the instance
+                        items:
+                          properties:
+                            filter:
+                              description: Filters used to query security groups in
+                                openstack
+                              properties:
+                                description:
+                                  type: string
+                                id:
+                                  type: string
+                                limit:
+                                  type: integer
+                                marker:
+                                  type: string
+                                name:
+                                  type: string
+                                notTags:
+                                  type: string
+                                notTagsAny:
+                                  type: string
+                                projectId:
+                                  type: string
+                                sortDir:
+                                  type: string
+                                sortKey:
+                                  type: string
+                                tags:
+                                  type: string
+                                tagsAny:
+                                  type: string
+                                tenantId:
+                                  type: string
+                              type: object
+                            name:
+                              description: Security Group name
+                              type: string
+                            uuid:
+                              description: Security Group UID
+                              type: string
+                          type: object
+                        type: array
                       securityGroups:
+                        description: The uuids of the security groups to assign to
+                          the instance
                         items:
                           type: string
                         type: array
@@ -3615,6 +3771,10 @@ spec:
                     properties:
                       id:
                         type: string
+                      ips:
+                        items:
+                          type: string
+                        type: array
                       name:
                         type: string
                       tags:
@@ -3711,6 +3871,10 @@ spec:
                     description: Be careful when using APIServerLoadBalancer, because
                       this field is optional and therefore not set in all cases
                     properties:
+                      allowedCIDRs:
+                        items:
+                          type: string
+                        type: array
                       id:
                         type: string
                       internalIP:
@@ -3834,7 +3998,53 @@ spec:
                         type: object
                       projectId:
                         type: string
+                      securityGroupFilters:
+                        description: The names, uuids, filters or any combination
+                          these of the security groups to assign to the instance
+                        items:
+                          properties:
+                            filter:
+                              description: Filters used to query security groups in
+                                openstack
+                              properties:
+                                description:
+                                  type: string
+                                id:
+                                  type: string
+                                limit:
+                                  type: integer
+                                marker:
+                                  type: string
+                                name:
+                                  type: string
+                                notTags:
+                                  type: string
+                                notTagsAny:
+                                  type: string
+                                projectId:
+                                  type: string
+                                sortDir:
+                                  type: string
+                                sortKey:
+                                  type: string
+                                tags:
+                                  type: string
+                                tagsAny:
+                                  type: string
+                                tenantId:
+                                  type: string
+                              type: object
+                            name:
+                              description: Security Group name
+                              type: string
+                            uuid:
+                              description: Security Group UID
+                              type: string
+                          type: object
+                        type: array
                       securityGroups:
+                        description: The uuids of the security groups to assign to
+                          the instance
                         items:
                           type: string
                         type: array
@@ -3863,6 +4073,10 @@ spec:
                     properties:
                       id:
                         type: string
+                      ips:
+                        items:
+                          type: string
+                        type: array
                       name:
                         type: string
                       tags:

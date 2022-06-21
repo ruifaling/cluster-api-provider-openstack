@@ -59,11 +59,11 @@ spec:
                           credentials
                         properties:
                           name:
-                            description: Name is unique within a namespace to reference
+                            description: name is unique within a namespace to reference
                               a secret resource.
                             type: string
                           namespace:
-                            description: Namespace defines the space within which
+                            description: namespace defines the space within which
                               the secret name must be unique.
                             type: string
                         type: object
@@ -286,11 +286,11 @@ spec:
                           (startup script in most cases)
                         properties:
                           name:
-                            description: Name is unique within a namespace to reference
+                            description: name is unique within a namespace to reference
                               a secret resource.
                             type: string
                           namespace:
-                            description: Namespace defines the space within which
+                            description: namespace defines the space within which
                               the secret name must be unique.
                             type: string
                         type: object
@@ -951,7 +951,53 @@ spec:
                               type: object
                             projectId:
                               type: string
+                            securityGroupFilters:
+                              description: The names, uuids, filters or any combination
+                                these of the security groups to assign to the instance
+                              items:
+                                properties:
+                                  filter:
+                                    description: Filters used to query security groups
+                                      in openstack
+                                    properties:
+                                      description:
+                                        type: string
+                                      id:
+                                        type: string
+                                      limit:
+                                        type: integer
+                                      marker:
+                                        type: string
+                                      name:
+                                        type: string
+                                      notTags:
+                                        type: string
+                                      notTagsAny:
+                                        type: string
+                                      projectId:
+                                        type: string
+                                      sortDir:
+                                        type: string
+                                      sortKey:
+                                        type: string
+                                      tags:
+                                        type: string
+                                      tagsAny:
+                                        type: string
+                                      tenantId:
+                                        type: string
+                                    type: object
+                                  name:
+                                    description: Security Group name
+                                    type: string
+                                  uuid:
+                                    description: Security Group UID
+                                    type: string
+                                type: object
+                              type: array
                             securityGroups:
+                              description: The uuids of the security groups to assign
+                                to the instance
                               items:
                                 type: string
                               type: array
